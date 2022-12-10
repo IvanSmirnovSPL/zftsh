@@ -1,4 +1,5 @@
 import random
+from marks import Bounds
 import csv
 
 
@@ -24,45 +25,55 @@ def generateMainText(mark: str) -> str:
 
 
 def fivePlus() -> str:
-    first = ['Отличная работа, Вы прекрасно поработали!', 'Великолепно выполнели задание!']
-    second = ['Продолжайте в том же духе.']
-    return first[int( random.random() * 1e5 % len(first))] + ' ' + second[int( random.random() * 1e5 % len(second))]
+    first = ['Отличная работа, Вы прекрасно поработали!', 'Великолепно выполнили задание!', 'Отличная работа, замечания отсутствуют!']
+    second = ['Продолжайте в том же духе.', 'Превосходно, ни одной ошибки.']
+    return first[int(random.random() * 1e5 % len(first))] + ' ' + second[int(random.random() * 1e5 % len(second))]
 
 
 def five() -> str:
     first = ['Отличная работа, Вы прекрасно поработали!', 'Замечательная работа, практически нет замечаний.!']
     second = ['Здорово ответили на все вопросы.']
-    return first[int( random.random() * 1e5 % len(first))] + ' ' + second[int( random.random() * 1e5 % len(second))]
+    return first[int(random.random() * 1e5 % len(first))] + ' ' + second[int(random.random() * 1e5 % len(second))]
 
 
 def four() -> str:
     first = ['Хорошая работа, видно, что освоили тему.', 'Тема освоена, Вы хорошо постарались.']
-    second = ['Есть неточности, обратите внимание на мои правки.']
-    return first[int( random.random() * 1e5 % len(first))] + ' ' + second[int( random.random() * 1e5 % len(second))]
+    second = ['Есть неточности, обратите внимание на мои правки.',
+              'В некоторых заданиях присутствуют неточности, обратите внимание на мои правки.',
+              'Присутствует некоторое количество недочётов, смотрите мои исправления.'
+              ]
+    return first[int(random.random() * 1e5 % len(first))] + ' ' + second[int(random.random() * 1e5 % len(second))]
 
 
 def three() -> str:
     first = ['Неплохая работа, но есть недочёты.', 'К сожалению, не всё получилось решить.']
     second = ['Обратите внимание на мои комментарии, есть неточности.',
               'Обратите внимание на мои исправления и решение авторов.',
-              'Если не успеваете, можете писать мне о продлении.']
-    return first[int( random.random() * 1e5 % len(first))] + ' ' + second[int( random.random() * 1e5 % len(second))]
+              'Если не успеваете, можете писать мне о продлении.',
+              'Есть несколько неотправленных задач, если не успеваете, можете писать мне о продлении.']
+    return first[int(random.random() * 1e5 % len(first))] + ' ' + second[int(random.random() * 1e5 % len(second))]
 
 
 def two() -> str:
     first = ['К сожалению, слишком мало получилось решить.', 'К сожалению, много недочётов.']
     second = ['Если не успеваете, можете писать мне о продлении.']
-    return first[int( random.random() * 1e5 % len(first))] + ' ' + second[int( random.random() * 1e5 % len(second))]
+    return first[int(random.random() * 1e5 % len(first))] + ' ' + second[int(random.random() * 1e5 % len(second))]
 
 
 pupils = []
 
-
+FLAGMARKS = True
+MATHEMATICA = Bounds([40., 32., 24., 12.])
 
 with open('data.txt', 'r', encoding="utf-8") as f:
     for line in f:
         tmp = line.split()
-        pupils.append(tmp)
+        if FLAGMARKS:
+            pupils.append([tmp[0], MATHEMATICA.determineMark(float(tmp[1]))])
+        else:
+            pupils.append(tmp)
+
+print(pupils)
 
 with open('rez.txt', 'w', encoding="utf-8") as f:
     for item in pupils:
